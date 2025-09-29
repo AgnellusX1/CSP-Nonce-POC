@@ -1,0 +1,47 @@
+{
+  "name": "csp-security-demo",
+  "version": "1.0.0",
+  "description": "Educational demonstration of Content Security Policy (CSP) implementation and XSS vulnerability mitigation",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "echo \"No linting configured\" && exit 0"
+  },
+  "keywords": [
+    "csp",
+    "content-security-policy", 
+    "security",
+    "xss",
+    "vulnerability",
+    "demonstration",
+    "educational",
+    "express",
+    "node.js",
+    "web-security",
+    "nonce",
+    "frontend",
+    "backend"
+  ],
+  "author": "AgnellusX1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AgnellusX1/CSP.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AgnellusX1/CSP/issues"
+  },
+  "homepage": "https://github.com/AgnellusX1/CSP#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
