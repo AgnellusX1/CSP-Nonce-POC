@@ -50,7 +50,7 @@ main {
 }
 
 /* Card styles */
-.info-card, .demo-card, .csp-info, .test-section {
+.info-card {
     background: rgba(255, 255, 255, 0.95);
     padding: 2rem;
     border-radius: 15px;
@@ -59,41 +59,15 @@ main {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.info-card:hover, .demo-card:hover, .csp-info:hover, .test-section:hover {
+.info-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-.info-card h2, .demo-card h2, .csp-info h2, .test-section h2 {
+.info-card h2 {
     color: #4a5568;
     margin-bottom: 1rem;
     font-size: 1.5rem;
-}
-
-/* Status box styles */
-.status-box {
-    background: #f7fafc;
-    border: 2px solid #e2e8f0;
-    padding: 1rem;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.status-success {
-    background: #f0fff4;
-    border-color: #68d391;
-    color: #2f855a;
-}
-
-.status-error {
-    background: #fed7d7;
-    border-color: #fc8181;
-    color: #c53030;
 }
 
 /* Button styles */
@@ -117,58 +91,6 @@ main {
 
 .btn:active {
     transform: translateY(0);
-}
-
-/* CSP details styles */
-.csp-details ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.csp-details li {
-    background: #f7fafc;
-    margin-bottom: 0.5rem;
-    padding: 1rem;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
-    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-    font-size: 0.9rem;
-}
-
-.csp-details strong {
-    color: #4a5568;
-}
-
-/* Test results styles */
-.test-results {
-    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-    font-size: 0.9rem;
-    background: #f7fafc;
-    padding: 1rem;
-    border-radius: 10px;
-    border: 2px solid #e2e8f0;
-}
-
-.test-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.test-item:last-child {
-    border-bottom: none;
-}
-
-.test-pass {
-    color: #2f855a;
-    font-weight: bold;
-}
-
-.test-fail {
-    color: #c53030;
-    font-weight: bold;
 }
 
 /* Footer styles */

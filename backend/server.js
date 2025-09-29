@@ -16,8 +16,8 @@ const cspMiddleware = (req, res, next) => {
     
     // CSP policy - secure scripts with nonce, permissive for XSS testing in other areas
     const csp = [
-        "default-src 'self' 'unsafe-inline' 'unsafe-eval' data:",
-        `script-src 'self' 'nonce-${nonce}'`, // Only allow scripts with nonce (secure)
+        "default-src 'self'",
+        `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'nonce-${nonce}'`, // Only allow scripts with nonce (secure)
         "style-src 'self' 'unsafe-inline' data:",  // Allow inline styles for flexibility
         "img-src 'self' data: https: http:",       // Allow images from anywhere
         "font-src 'self' data:",
@@ -45,15 +45,6 @@ app.use(cspMiddleware);
 
 // Serve static files from frontend directory
 app.use(express.static(path.join(__dirname, '../frontend')));
-
-// Basic API endpoint
-app.get('/api/status', (req, res) => {
-    res.json({ 
-        message: 'Backend is running!', 
-        csp: 'Content Security Policy is active',
-        timestamp: new Date().toISOString() 
-    });
-});
 
 // Serve the main page
 app.get('/', (req, res) => {

@@ -19,35 +19,6 @@
                 <p>Content Security Policy (CSP) is a security standard that helps prevent cross-site scripting (XSS), clickjacking, and other code injection attacks by controlling which resources the browser is allowed to load.</p>
             </section>
 
-            <section class="demo-card">
-                <h2>API Status</h2>
-                <div id="api-status" class="status-box">
-                    <p>Loading...</p>
-                </div>
-                <button id="fetch-status" class="btn">Refresh Status</button>
-            </section>
-
-            <section class="csp-info">
-                <h2>Current CSP Policy</h2>
-                <div class="csp-details">
-                    <ul>
-                        <li><strong>default-src 'self':</strong> Only allow resources from the same origin</li>
-                        <li><strong>script-src 'self' 'nonce-xxx':</strong> Allow scripts from same origin and with valid nonce</li>
-                        <li><strong>style-src 'self' 'nonce-xxx':</strong> Allow styles from same origin and with valid nonce</li>
-                        <li><strong>img-src 'self' data: https:</strong> Allow images from same origin, data URLs, and HTTPS</li>
-                        <li><strong>frame-ancestors 'none':</strong> Prevent this page from being embedded in iframes</li>
-                    </ul>
-                    <p><small><strong>Note:</strong> Nonces are unique per request and provide better security than 'unsafe-inline'</small></p>
-                </div>
-            </section>
-
-            <section class="test-section">
-                <h2>CSP Test Results</h2>
-                <div id="test-results" class="test-results">
-                    <!-- Test results will be populated by JavaScript -->
-                </div>
-            </section>
-
             <section class="data-storage-section">
                 <h2>💾 Data Storage Demo</h2>
                 <div class="input-group">
