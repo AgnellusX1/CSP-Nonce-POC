@@ -74,19 +74,21 @@ CSP/
 
 ## 🛡️ CSP Policy Implemented
 
-The server implements the following CSP directives with **nonce-based security**:
+The server implements the following CSP directives with **nonce-based security and strict-dynamic**:
 
 - **`default-src 'self'`** - Only allow resources from the same origin
-- **`script-src 'self' 'nonce-{random}'`** - Allow same-origin scripts and scripts with valid nonce
-- **`style-src 'self' 'unsafe-inline'`** - Allow same-origin and inline styles
+- **`script-src 'nonce-{random}' 'strict-dynamic' 'unsafe-inline'`** - Use nonces and strict-dynamic for enhanced script security
+- **`style-src 'self' 'unsafe-inline' data:`** - Allow same-origin and inline styles
 - **`img-src 'self' data: https: http:`** - Allow images from same-origin, data URLs, and HTTP/HTTPS
-- **`font-src 'self'`** - Only allow fonts from same-origin
-- **`connect-src 'self'`** - Only allow AJAX/fetch requests to same-origin
-- **`frame-ancestors 'none'`** - Prevent iframe embedding
-- **`base-uri 'self'`** - Restrict base element URLs
-- **`form-action 'self'`** - Only allow forms to submit to same-origin
+- **`font-src 'self' data:`** - Allow fonts from same-origin and data URLs
+- **`connect-src 'self' data:`** - Allow AJAX/fetch requests to same-origin and data URLs
+- **`frame-src 'self' data:`** - Allow frames for testing
+- **`object-src 'self' data:`** - Allow objects from same-origin and data URLs
+- **`base-uri 'self' data:`** - Restrict base element URLs
+- **`form-action 'self' data:`** - Allow forms to submit to same-origin and data URLs
+- **`report-uri https://browserstack.uriports.com/reports/report`** - CSP violation reporting
 
-**🔒 Security Enhancement**: This implementation uses **cryptographic nonces** for scripts, preventing most XSS attacks while allowing legitimate application functionality.
+**🔒 Security Enhancement**: This implementation uses **cryptographic nonces** with **strict-dynamic** for scripts. The `strict-dynamic` directive allows trusted scripts to load other scripts dynamically without requiring individual nonces, while still preventing XSS attacks.
 
 ## 🔍 Additional Security Headers
 
@@ -97,45 +99,58 @@ The server also sets these security headers:
 - **X-XSS-Protection: 0** - Disabled for XSS testing demonstration
 - **Referrer-Policy: no-referrer** - Minimal referrer information
 
-## 🚨 Intentional Vulnerability
+## 🚨 Intentional Vulnerabilities
 
 **⚠️ EDUCATIONAL PURPOSE ONLY**
 
-This application contains an **intentional XSS vulnerability** in the "Data Storage Demo" section:
+This application contains **intentional XSS vulnerabilities** for security demonstration:
+
+### 1. Stored XSS (Data Storage Demo)
 - User input is stored in localStorage
 - **Stored data is displayed without HTML sanitization**
 - Demonstrates how CSP can mitigate XSS even with vulnerable code
 
-### Testing the Vulnerability
+### 2. Reflected XSS (Reflection Testing)
+- User input is directly reflected in server response
+- **No input sanitization on the `/reflect` endpoint**
+- Shows how CSP blocks script execution in reflected content
 
+### Testing the Vulnerabilities
+
+**Stored XSS:**
 1. **Enter HTML/JavaScript** in the input field: `<img src=x onerror=alert('XSS')>`
 2. **Click "Save Data"**
 3. **Observe**: HTML is injected but JavaScript execution is **blocked by CSP**
-4. **Check browser console** for CSP violation messages
 
-This demonstrates **defense-in-depth** security principles.
+**Reflected XSS:**
+1. **Enter payload** in reflection input: `<script>alert('Reflected XSS')</script>`
+2. **Click "Test Reflection"**
+3. **Observe**: Script tags are rendered but **blocked by CSP**
+
+Both demonstrate **defense-in-depth** security principles where CSP acts as a safety net.
 
 ## 🧪 Testing CSP & Features
 
 1. **Open Developer Tools** in your browser (F12)
 2. **Check the Network tab** - You'll see the CSP headers with unique nonces in the response
 3. **Check the Console** - CSP violations (if any) will be logged here
-4. **Try the API Status button** - Demonstrates same-origin AJAX requests
-5. **Test the Data Storage Demo** - Enter text and save it to see localStorage functionality
+4. **Test the Data Storage Demo** - Enter text and save it to see localStorage functionality
+5. **Test Reflected XSS** - Use the reflection testing section to test server-side XSS
 
 ### Features to Test
 
 - **Data Persistence**: Enter text in the input field and click "Save Data" - it will persist across page refreshes
-- **Nonce Security**: View page source to see unique nonces in script and style tags
-- **CSP Compliance**: All functionality works without `'unsafe-inline'` directives
-- **XSS Protection**: Try injecting `<script>alert('XSS')</script>` - it will be blocked by CSP
+- **Stored XSS Protection**: Try injecting `<script>alert('XSS')</script>` in the data storage - it will be blocked by CSP
+- **Reflected XSS Protection**: Use the reflection section to test various XSS payloads
+- **Nonce Security**: View page source to see unique nonces in script tags
+- **Strict-Dynamic**: Observe how legitimate scripts can still load additional resources while maintaining security
 
 ### Verifying CSP Headers
 
 In the browser's Developer Tools Network tab, look for these headers in the response:
 
 ```
-Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' data:; script-src 'self' 'nonce-{unique-nonce}'; style-src 'self' 'unsafe-inline' data:; img-src 'self' data: https: http:; font-src 'self' data:; connect-src 'self' data:; frame-src 'self' data:; object-src 'self' data:; base-uri 'self' data:; form-action 'self' data:
+Content-Security-Policy: default-src 'self'; script-src 'nonce-{unique-nonce}' 'strict-dynamic' 'unsafe-inline'; style-src 'self' 'unsafe-inline' data:; img-src 'self' data: https: http:; font-src 'self' data:; connect-src 'self' data:; frame-src 'self' data:; object-src 'self' data:; base-uri 'self' data:; form-action 'self' data:; report-uri https://browserstack.uriports.com/reports/report
 ```
 
 Each nonce will be different on every page load, providing enhanced security.
@@ -143,7 +158,9 @@ Each nonce will be different on every page load, providing enhanced security.
 ## 🔧 API Endpoints
 
 - **GET `/`** - Serves the main HTML page with dynamically generated nonces
-- **GET `/api/status`** - Returns server status and CSP information
+- **GET `/reflect`** - Reflected XSS testing endpoint (intentionally vulnerable)
+  - Query parameters: `input` (text to reflect), `name` (user name)
+  - Example: `/reflect?input=<b>Bold</b>&name=John`
 
 ## 📝 Scripts
 
@@ -154,24 +171,25 @@ Each nonce will be different on every page load, providing enhanced security.
 
 With this policy, the following would be blocked:
 
-- External JavaScript from other domains (e.g., CDN scripts)
-- External CSS from other domains  
-- Images from untrusted sources
-- Embedding this page in iframes
-- Form submissions to external domains
-- WebSocket connections to other origins
-- Inline scripts without proper nonce
-- Dynamic script creation and execution
+- **External JavaScript** from other domains (due to strict-dynamic)
+- **External CSS** from other domains  
+- **Images** from untrusted sources (only self, data, http, https allowed)
+- **Inline scripts** without proper nonce
+- **Dynamic script creation** by untrusted sources
+- **XSS attempts** via script injection
+- **Embedding** this page in iframes (when frame-ancestors is set)
 
 ## ⚡ What CSP Allows
 
 The current policy allows:
 
-- Same-origin JavaScript files with nonce
-- Inline CSS styles (for styling flexibility)
-- Images from any HTTPS/HTTP source and data URLs
-- Same-origin AJAX requests
-- localStorage and other browser APIs
+- **Nonce-based JavaScript** files and inline scripts
+- **Dynamic script loading** by trusted scripts (via strict-dynamic)
+- **Inline CSS** styles (for styling flexibility)
+- **Images** from any HTTPS/HTTP source and data URLs
+- **Same-origin resources** and data URLs
+- **localStorage** and other browser APIs
+- **CSP violation reporting** to external endpoint
 
 ## 🔧 Customizing CSP
 
@@ -205,11 +223,13 @@ To modify the CSP policy, edit the `cspMiddleware` function in `backend/server.j
 
 To enhance this basic setup:
 
-1. **✅ Implemented nonces** for inline scripts instead of `'unsafe-inline'` 
-2. **Add CSP reporting** to monitor violations
-3. **Further tighten policies** by restricting more resource types
+1. **✅ Implemented nonces** for inline scripts with strict-dynamic
+2. **✅ Added CSP reporting** to monitor violations  
+3. **✅ Added reflected XSS testing** for comprehensive security demonstration
 4. **Add HTTPS** in production
-5. **Implement additional security headers**
+5. **Implement additional security headers** like HSTS
+6. **Add hash-based CSP** for static inline scripts
+7. **Implement CSP violation monitoring** and alerting
 
 ## 📜 License
 
