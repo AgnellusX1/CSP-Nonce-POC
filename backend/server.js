@@ -14,10 +14,10 @@ const cspMiddleware = (req, res, next) => {
     // Store nonce in response locals for use in templates
     res.locals.nonce = nonce;
     
-    // CSP policy - secure scripts with nonce, permissive for XSS testing in other areas
+    // CSP policy with strict-dynamic for enhanced security
     const csp = [
         "default-src 'self'",
-        `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'nonce-${nonce}'`, // Only allow scripts with nonce (secure)
+        `script-src 'strict-dynamic' 'unsafe-inline'`, // strict-dynamic disables host-based allowlisting, only nonce needed
         "style-src 'self' 'unsafe-inline' data:",  // Allow inline styles for flexibility
         "img-src 'self' data: https: http:",       // Allow images from anywhere
         "font-src 'self' data:",
@@ -44,10 +44,7 @@ const cspMiddleware = (req, res, next) => {
 // Apply CSP middleware to all routes
 app.use(cspMiddleware);
 
-// Serve static files from frontend directory
-app.use(express.static(path.join(__dirname, '../frontend')));
-
-// Serve the main page
+// Serve the main page with nonce replacement
 app.get('/', (req, res) => {
     // Read the HTML template
     const htmlPath = path.join(__dirname, '../frontend/index.html');
@@ -58,8 +55,14 @@ app.get('/', (req, res) => {
     htmlContent = htmlContent.replace(/{{NONCE}}/g, nonce);
     
     // Send the modified HTML
+    res.setHeader('Content-Type', 'text/html');
     res.send(htmlContent);
 });
+
+// Serve static files from frontend directory (excluding index.html)
+app.use(express.static(path.join(__dirname, '../frontend'), {
+    index: false // Don't serve index.html as static file
+}));
 
 // Reflected XSS testing endpoint
 app.get('/reflect', (req, res) => {
