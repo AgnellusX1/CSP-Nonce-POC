@@ -46,6 +46,30 @@ function setupEventListeners() {
         });
         console.log('Enter key listener added to input');
     }
+    
+    // Reflected XSS test button
+    const reflectBtn = document.getElementById('reflectBtn');
+    if (reflectBtn) {
+        reflectBtn.addEventListener('click', testReflectedXSS);
+        console.log('Reflect button event listener added');
+    }
+    
+    // Add enter key support for reflection inputs
+    const reflectInput = document.getElementById('reflectInput');
+    const nameInput = document.getElementById('nameInput');
+    if (reflectInput && nameInput) {
+        reflectInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                testReflectedXSS();
+            }
+        });
+        nameInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                testReflectedXSS();
+            }
+        });
+        console.log('Enter key listeners added to reflection inputs');
+    }
 }
 
 // Data Storage Functions
@@ -154,3 +178,44 @@ function showStatus(message, type) {
 // Make functions available globally
 window.saveData = saveData;
 window.clearData = clearData;
+
+// Reflected XSS Testing Function
+function testReflectedXSS() {
+    console.log('testReflectedXSS function called');
+    
+    const reflectInput = document.getElementById('reflectInput');
+    const nameInput = document.getElementById('nameInput');
+    
+    if (!reflectInput || !nameInput) {
+        console.error('Reflection input elements not found');
+        return;
+    }
+    
+    const inputValue = reflectInput.value.trim();
+    const nameValue = nameInput.value.trim();
+    
+    if (!inputValue) {
+        alert('Please enter some text to reflect');
+        return;
+    }
+    
+    // Construct URL with query parameters for reflected XSS test
+    const baseUrl = window.location.origin + '/reflect';
+    const params = new URLSearchParams({
+        input: inputValue,
+        name: nameValue || 'Anonymous'
+    });
+    
+    const testUrl = `${baseUrl}?${params.toString()}`;
+    
+    console.log('Opening reflected XSS test URL:', testUrl);
+    
+    // Open in new tab/window to test reflection
+    window.open(testUrl, '_blank');
+    
+    // Show confirmation message
+    alert(`Reflected XSS test initiated!\n\nInput: "${inputValue}"\nName: "${nameValue || 'Anonymous'}"\n\nCheck the new tab to see if the content is reflected without sanitization.`);
+}
+
+// Make reflected XSS function available globally
+window.testReflectedXSS = testReflectedXSS;

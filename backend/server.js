@@ -17,7 +17,7 @@ const cspMiddleware = (req, res, next) => {
     // CSP policy - secure scripts with nonce, permissive for XSS testing in other areas
     const csp = [
         "default-src 'self'",
-        `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'nonce-${nonce}'`, // Only allow scripts with nonce (secure)
+        `script-src 'self' 'unsafe-inline' 'unsafe-eval'`, // Only allow scripts with nonce (secure)
         "style-src 'self' 'unsafe-inline' data:",  // Allow inline styles for flexibility
         "img-src 'self' data: https: http:",       // Allow images from anywhere
         "font-src 'self' data:",
@@ -58,6 +58,41 @@ app.get('/', (req, res) => {
     
     // Send the modified HTML
     res.send(htmlContent);
+});
+
+// Reflected XSS testing endpoint
+app.get('/reflect', (req, res) => {
+    const userInput = req.query.input || '';
+    const name = req.query.name || 'Anonymous';
+    
+    // Intentionally vulnerable to reflected XSS - directly injecting user input
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Reflected XSS Test</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+            .container { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto; }
+            .result { background: rgba(255,255,255,0.2); padding: 15px; border-radius: 5px; margin: 10px 0; }
+            a { color: #ffeb3b; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔄 Reflected XSS Test Results</h1>
+            <div class="result">
+                <h3>Hello, ${name}!</h3>
+                <p><strong>Your input was:</strong> ${userInput}</p>
+                <p><em>Note: This content is directly reflected without sanitization for XSS testing purposes.</em></p>
+            </div>
+            <a href="/">← Back to Main Page</a>
+        </div>
+    </body>
+    </html>
+    `;
+    
+    res.send(html);
 });
 
 // Start server

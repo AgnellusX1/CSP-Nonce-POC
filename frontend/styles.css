@@ -118,6 +118,42 @@ footer p {
     backdrop-filter: blur(10px);
 }
 
+/* Reflection Section Styles */
+.reflection-section {
+    grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-left: 5px solid #f6ad55;
+}
+
+.reflection-info {
+    background: #fef5e7;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #f6ad55;
+    margin-top: 1rem;
+}
+
+.reflection-info ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.reflection-info li {
+    margin: 0.25rem 0;
+}
+
+.reflection-info code {
+    background: #e2e8f0;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
 .input-group {
     display: flex;
     gap: 1rem;
@@ -263,7 +299,7 @@ footer p {
         gap: 1rem;
     }
     
-    .info-card, .demo-card, .csp-info, .test-section, .data-storage-section {
+    .info-card, .demo-card, .csp-info, .test-section, .data-storage-section, .reflection-section {
         padding: 1.5rem;
     }
     

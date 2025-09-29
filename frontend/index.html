@@ -20,7 +20,7 @@
             </section>
 
             <section class="data-storage-section">
-                <h2>💾 Data Storage Demo</h2>
+                <h2>💾 Data Storage Demo (Stored XSS)</h2>
                 <div class="input-group">
                     <input type="text" id="userInput" placeholder="Enter some text to save..." />
                     <button id="saveBtn">Save Data</button>
@@ -32,6 +32,25 @@
                     <div id="savedValues">No data saved yet</div>
                     <div id="status"></div>
                     <button id="clearBtn" class="clear-btn">Clear All Data</button>
+                </div>
+            </section>
+
+            <section class="reflection-section">
+                <h2>🔄 Reflected XSS Testing</h2>
+                <p>This section tests reflected XSS by sending input to the server and displaying the response.</p>
+                <div class="input-group">
+                    <input type="text" id="reflectInput" placeholder="Enter text to reflect..." />
+                    <input type="text" id="nameInput" placeholder="Enter your name..." />
+                    <button id="reflectBtn">Test Reflection</button>
+                </div>
+                <div class="reflection-info">
+                    <p><strong>Test Examples:</strong></p>
+                    <ul>
+                        <li>Normal text: <code>Hello World</code></li>
+                        <li>HTML injection: <code>&lt;b&gt;Bold Text&lt;/b&gt;</code></li>
+                        <li>Script injection: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code></li>
+                    </ul>
+                    <p><em>The script injection should be blocked by CSP, but HTML injection may work.</em></p>
                 </div>
             </section>
         </main>
