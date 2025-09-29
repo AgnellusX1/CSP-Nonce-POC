@@ -50,7 +50,7 @@ This project aims to:
 ### 1. Fork the Repository
 ```bash
 git fork https://github.com/AgnellusX1/CSP.git
-cd CSP/csp-project
+cd CSP
 ```
 
 ### 2. Create a Feature Branch

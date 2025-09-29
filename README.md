@@ -33,7 +33,7 @@ CSP works by controlling which resources (scripts, styles, images, etc.) the bro
 1. **Clone or download the project**
    ```bash
    git clone https://github.com/AgnellusX1/CSP.git
-   cd CSP/csp-project
+   cd CSP
    ```
 
 2. **Install dependencies**
@@ -57,7 +57,7 @@ CSP works by controlling which resources (scripts, styles, images, etc.) the bro
 ## 📁 Project Structure
 
 ```
-csp-project/
+CSP/
 ├── backend/
 │   └── server.js          # Express server with CSP middleware
 ├── frontend/
@@ -65,7 +65,11 @@ csp-project/
 │   ├── styles.css         # CSS styles
 │   └── script.js          # JavaScript functionality
 ├── package.json           # Project configuration
-└── README.md             # This file
+├── README.md             # This file
+├── LICENSE               # MIT License
+├── SECURITY.md           # Security policy
+├── CONTRIBUTING.md       # Contribution guidelines
+└── .gitignore           # Git ignore rules
 ```
 
 ## 🛡️ CSP Policy Implemented
