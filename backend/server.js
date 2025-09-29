@@ -17,7 +17,7 @@ const cspMiddleware = (req, res, next) => {
     // CSP policy with strict-dynamic for enhanced security
     const csp = [
         "default-src 'self'",
-        `script-src 'strict-dynamic' 'unsafe-inline'`, // strict-dynamic disables host-based allowlisting, only nonce needed
+        `script-src 'nonce-${nonce}' 'strict-dynamic' 'unsafe-inline'`, // strict-dynamic disables host-based allowlisting, only nonce needed
         "style-src 'self' 'unsafe-inline' data:",  // Allow inline styles for flexibility
         "img-src 'self' data: https: http:",       // Allow images from anywhere
         "font-src 'self' data:",
