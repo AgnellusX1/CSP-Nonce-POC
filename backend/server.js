@@ -17,7 +17,7 @@ const cspMiddleware = (req, res, next) => {
     // CSP policy - secure scripts with nonce, permissive for XSS testing in other areas
     const csp = [
         "default-src 'self'",
-        `script-src 'self' 'unsafe-inline' 'unsafe-eval'`, // Only allow scripts with nonce (secure)
+        `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'nonce-${nonce}'`, // Only allow scripts with nonce (secure)
         "style-src 'self' 'unsafe-inline' data:",  // Allow inline styles for flexibility
         "img-src 'self' data: https: http:",       // Allow images from anywhere
         "font-src 'self' data:",
@@ -25,7 +25,8 @@ const cspMiddleware = (req, res, next) => {
         "frame-src 'self' data:",               // Allow frames for testing
         "object-src 'self' data:",              // Allow objects
         "base-uri 'self' data:",
-        "form-action 'self' data:"
+        "form-action 'self' data:",
+        "report-uri https://browserstack.uriports.com/reports/report"
     ].join('; ');
     
     // Set CSP header
